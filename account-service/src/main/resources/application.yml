@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: account-service
+  jackson:
+    #    default-property-inclusion: non_null
+    property-naming-strategy: SNAKE_CASE
+  datasource:
+    url: jdbc:postgresql://localhost:5432/account-service_db
+    username: kamdoum
+    password: danielle1234
+    driver-class-name: org.postgresql.Driver
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    hibernate:
+      ddl-auto: create
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+server:
+  port: 8383
+
