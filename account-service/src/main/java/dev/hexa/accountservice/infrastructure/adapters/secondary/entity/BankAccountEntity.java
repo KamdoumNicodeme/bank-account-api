@@ -1,10 +1,7 @@
 package dev.hexa.accountservice.infrastructure.adapters.secondary.entity;
 
 import dev.hexa.accountservice.infrastructure.adapters.secondary.model.Customer;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,7 @@ public class BankAccountEntity {
     private Double balance;
     private LocalDate createdAt;
     private String currency;
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
     @Transient
     private Customer customer;

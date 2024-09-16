@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @DomainService
 public class BankAccountService implements BankAccountServicePort {
-    private BankAccountPersistencePort bankAccountPersistencePort;
+    private final BankAccountPersistencePort bankAccountPersistencePort;
     @Override
     public BankAccount getBankAccount(String accountId) {
         return bankAccountPersistencePort.findBankAccountById(accountId).orElseThrow(AccountNotFoundException::new);
