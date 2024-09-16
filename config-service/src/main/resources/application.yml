@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+
+      server:
+        git:
+          uri: https://github.com/KamdoumNicodeme/bank-account-config-repo.git
+        enabled: true
+      discovery:
+        enabled: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_SERVICE_URL:http://localhost:8761/eureka}
+server:
+  port: 9999
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
