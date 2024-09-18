@@ -1,0 +1,90 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    services:
+      bank-account-discovery-service:
+        image: bank-account-discovery-service:latest
+        build:
+          context: ./discovery-service
+        ports:
+          - 8761:8761
+        options: > 
+          --health-cmd="curl -f http://localhost:8761/actuator/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      bank-account-config-service:
+        image: bank-account-config-service:latest
+        build:
+          context: ./config-service
+        ports:
+          - 9999:9999
+        options: > 
+          --health-cmd="curl -f http://localhost:9999/actuator/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      bank-account-account-service:
+        image: bank-account-account-service:latest
+        build:
+          context: ./account-service
+        ports:
+          - 8383:8383
+        options: > 
+          --health-cmd="curl -f http://localhost:8383/actuator/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      bank-account-customer-service:
+        image: bank-account-customer-service:latest
+        build:
+          context: ./customer-service
+        ports:
+          - 8282:8282
+        options: > 
+          --health-cmd="curl -f http://localhost:8282/actuator/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      bank-account-gateway-service:
+        image: bank-account-gateway-service:latest
+        build:
+          context: ./gateway-service
+        ports:
+          - 8888:8888
+        options: > 
+          --health-cmd="curl -f http://localhost:8888/actuator/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Run tests
+      run: mvn test
